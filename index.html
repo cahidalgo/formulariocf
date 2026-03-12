@@ -115,8 +115,8 @@
     .color-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .color-row label { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
     input[type="color"] {
-      width: 44px; height: 44px; border: none; border-radius: 8px;
-      cursor: pointer; padding: 2px; background: var(--border);
+      width: 56px; height: 56px; border: none; border-radius: 8px;
+      cursor: pointer; padding: 4px; background: var(--border);
     }
     .color-hint { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
 
@@ -195,12 +195,12 @@
       <div class="question">
         <label class="q-label">1. ¿Cuáles son los colores institucionales que debemos usar en la plataforma? <span class="req">*</span></label>
         <div class="color-row">
-          <label>Color principal:</label>
-          <input type="color" name="color_principal" value="#003087" />
-          <label>Color secundario:</label>
-          <input type="color" name="color_secundario" value="#FFD700" />
-          <label>Color de acento:</label>
-          <input type="color" name="color_acento" value="#FFFFFF" />
+          <label for="color_principal">Color principal:</label>
+          <input type="color" id="color_principal" name="color_principal" value="#003087" />
+          <label for="color_secundario">Color secundario:</label>
+          <input type="color" id="color_secundario" name="color_secundario" value="#FFD700" />
+          <label for="color_acento">Color de acento:</label>
+          <input type="color" id="color_acento" name="color_acento" value="#FFFFFF" />
         </div>
         <p class="color-hint">Si no tienes los colores exactos, puedes escribirlos a continuación (nombre, código HEX o RGB).</p>
         <textarea class="textarea-input" name="colores_descripcion" rows="2" placeholder="Ej. Azul marino (#003087), Dorado, Blanco..."></textarea>
@@ -212,7 +212,7 @@
       <div class="question">
         <label class="q-label">2. ¿Existen logos o elementos gráficos específicos que debamos incorporar? <span class="req">*</span></label>
         <div class="options-grid">
-          <label class="opt-item"><input type="radio" name="logos" value="si_logo_oficial" /> <span>Sí, tenemos logo oficial del colegio</span></label>
+          <label class="opt-item"><input type="radio" name="logos" value="si_logo_oficial" required /> <span>Sí, tenemos logo oficial del colegio</span></label>
           <label class="opt-item"><input type="radio" name="logos" value="si_varios" /> <span>Sí, logo + otros elementos (escudo, mascota, etc.)</span></label>
           <label class="opt-item"><input type="radio" name="logos" value="solo_nombre" /> <span>Solo el nombre del colegio en texto</span></label>
           <label class="opt-item"><input type="radio" name="logos" value="no_aun" /> <span>Aún no contamos con estos elementos</span></label>
