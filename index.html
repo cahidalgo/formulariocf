@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kick-Off | Plataforma Crowdfunding Escolar</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --accent: #0ea5e9;
+      --success: #16a34a;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
+      color: white;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+    .hero-icon { font-size: 3rem; margin-bottom: 12px; }
+    .hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; margin-bottom: 8px; }
+    .hero p  { font-size: 1rem; opacity: 0.88; max-width: 580px; margin: 0 auto; }
+    .badge {
+      display: inline-block; margin-top: 18px;
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35);
+      padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+    }
+
+    /* ── WRAPPER ── */
+    .wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    /* ── SECTION CARD ── */
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 28px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 18px 24px;
+      background: var(--primary-light);
+      border-bottom: 1px solid #bfdbfe;
+    }
+    .section-icon { font-size: 1.4rem; }
+    .section-title { font-size: 1rem; font-weight: 700; color: var(--primary-dark); }
+    .section-body { padding: 24px; display: flex; flex-direction: column; gap: 28px; }
+
+    /* ── QUESTION ── */
+    .question label.q-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .question label.q-label span.req { color: #ef4444; margin-left: 3px; }
+
+    /* options grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .opt-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: #f8fafc; border: 1.5px solid var(--border);
+      border-radius: 8px; padding: 10px 12px;
+      cursor: pointer; transition: border-color .2s, background .2s;
+    }
+    .opt-item:hover { border-color: var(--primary); background: var(--primary-light); }
+    .opt-item input[type="radio"],
+    .opt-item input[type="checkbox"] { margin-top: 2px; accent-color: var(--primary); flex-shrink: 0; }
+    .opt-item span { font-size: 0.88rem; line-height: 1.4; }
+
+    /* text & textarea */
+    .text-input, .textarea-input {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; font-family: inherit; color: var(--text);
+      background: #f8fafc; transition: border-color .2s, box-shadow .2s;
+      resize: vertical;
+    }
+    .text-input:focus, .textarea-input:focus {
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+      background: white;
+    }
+
+    /* color row */
+    .color-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .color-row label { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
+    input[type="color"] {
+      width: 44px; height: 44px; border: none; border-radius: 8px;
+      cursor: pointer; padding: 2px; background: var(--border);
+    }
+    .color-hint { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+
+    /* hint text */
+    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+
+    /* divider */
+    .q-divider { border: none; border-top: 1px dashed var(--border); }
+
+    /* ── SUBMIT ── */
+    .submit-area { text-align: center; padding-top: 8px; }
+    .btn-submit {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white; border: none; padding: 16px 48px;
+      border-radius: 50px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+    .submit-note { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 20px;
+      font-size: 0.78rem; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-icon">🏫</div>
+  <h1>Kick-Off — Plataforma Crowdfunding</h1>
+  <p>Tus respuestas nos ayudarán a construir una plataforma que refleje la identidad y las necesidades del colegio.</p>
+  <span class="badge">🚀 Reunión de inicio de proyecto</span>
+</div>
+
+<!-- FORM -->
+<div class="wrapper">
+<form name="kickoff-crowdfunding" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+  <input type="hidden" name="form-name" value="kickoff-crowdfunding" />
+  <p style="display:none"><label>No llenar: <input name="bot-field" /></label></p>
+
+  <!-- INFO BÁSICA -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">👤</span>
+      <span class="section-title">Información del respondiente</span>
+    </div>
+    <div class="section-body">
+
+      <div class="question">
+        <label class="q-label">Nombre completo <span class="req">*</span></label>
+        <input class="text-input" type="text" name="nombre" placeholder="Ej. María García" required />
+      </div>
+
+      <div class="question">
+        <label class="q-label">Cargo o rol en el colegio <span class="req">*</span></label>
+        <input class="text-input" type="text" name="cargo" placeholder="Ej. Rector, Coordinador, Docente..." required />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN 1: ESTÉTICA -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">🎨</span>
+      <span class="section-title">Estética y Diseño</span>
+    </div>
+    <div class="section-body">
+
+      <!-- P1 -->
+      <div class="question">
+        <label class="q-label">1. ¿Cuáles son los colores institucionales que debemos usar en la plataforma? <span class="req">*</span></label>
+        <div class="color-row">
+          <label>Color principal:</label>
+          <input type="color" name="color_principal" value="#003087" />
+          <label>Color secundario:</label>
+          <input type="color" name="color_secundario" value="#FFD700" />
+          <label>Color de acento:</label>
+          <input type="color" name="color_acento" value="#FFFFFF" />
+        </div>
+        <p class="color-hint">Si no tienes los colores exactos, puedes escribirlos a continuación (nombre, código HEX o RGB).</p>
+        <textarea class="textarea-input" name="colores_descripcion" rows="2" placeholder="Ej. Azul marino (#003087), Dorado, Blanco..."></textarea>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P2 -->
+      <div class="question">
+        <label class="q-label">2. ¿Existen logos o elementos gráficos específicos que debamos incorporar? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="logos" value="si_logo_oficial" /> <span>Sí, tenemos logo oficial del colegio</span></label>
+          <label class="opt-item"><input type="radio" name="logos" value="si_varios" /> <span>Sí, logo + otros elementos (escudo, mascota, etc.)</span></label>
+          <label class="opt-item"><input type="radio" name="logos" value="solo_nombre" /> <span>Solo el nombre del colegio en texto</span></label>
+          <label class="opt-item"><input type="radio" name="logos" value="no_aun" /> <span>Aún no contamos con estos elementos</span></label>
+        </div>
+        <textarea class="textarea-input" name="logos_detalle" rows="2" placeholder="Comentarios adicionales sobre los elementos gráficos..." style="margin-top:10px"></textarea>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P3 -->
+      <div class="question">
+        <label class="q-label">3. ¿Cómo te gustaría que se sintiera visualmente la plataforma? <span class="req">*</span> <br><small class="hint">Puedes elegir varias opciones.</small></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="formal" /> <span>🏛️ Formal e institucional</span></label>
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="amigable" /> <span>😊 Amigable y cercana</span></label>
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="moderna" /> <span>✨ Moderna y tecnológica</span></label>
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="minimalista" /> <span>🔲 Limpia y minimalista</span></label>
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="colorida" /> <span>🌈 Colorida y dinámica</span></label>
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="tradicional" /> <span>📖 Tradicional y confiable</span></label>
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="infantil" /> <span>🎒 Juvenil/orientada a estudiantes</span></label>
+          <label class="opt-item"><input type="checkbox" name="sensacion[]" value="otro_est" /> <span>Otro</span></label>
+        </div>
+        <textarea class="textarea-input" name="sensacion_otro" rows="2" placeholder="Describe cómo imaginas la plataforma..." style="margin-top:10px"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: ESTRUCTURA -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">🗂️</span>
+      <span class="section-title">Estructura de la Página</span>
+    </div>
+    <div class="section-body">
+
+      <!-- P4 -->
+      <div class="question">
+        <label class="q-label">4. ¿Qué información debe aparecer en la página de inicio para captar la atención de los usuarios? <span class="req">*</span> <br><small class="hint">Selecciona todas las que apliquen.</small></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="descripcion_colegio" /> <span>📋 Descripción/misión del colegio</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="proyectos_destacados" /> <span>🌟 Proyectos destacados</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="meta_total" /> <span>💰 Meta total de recaudación</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="video" /> <span>🎥 Video institucional</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="testimonios" /> <span>💬 Testimonios de la comunidad</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="noticias" /> <span>📰 Noticias y actualizaciones</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="donantes" /> <span>🙌 Donantes recientes</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="impacto" /> <span>📊 Impacto generado hasta el momento</span></label>
+          <label class="opt-item"><input type="checkbox" name="inicio[]" value="cta_donar" /> <span>🎯 Botón claro de "Dona ahora"</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P5 -->
+      <div class="question">
+        <label class="q-label">5. ¿Prefieres que los proyectos se presenten en una lista o en una galería visual? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="presentacion_proyectos" value="lista" /> <span>📄 Lista (texto detallado por proyecto)</span></label>
+          <label class="opt-item"><input type="radio" name="presentacion_proyectos" value="galeria" /> <span>🖼️ Galería visual (tarjetas con imágenes)</span></label>
+          <label class="opt-item"><input type="radio" name="presentacion_proyectos" value="ambas" /> <span>🔄 Ambas (que el usuario elija)</span></label>
+          <label class="opt-item"><input type="radio" name="presentacion_proyectos" value="sin_preferencia" /> <span>🤷 Sin preferencia</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P6 -->
+      <div class="question">
+        <label class="q-label">6. ¿Cuál es la información más importante en la página de detalles de cada proyecto? <span class="req">*</span> <br><small class="hint">Ordena por importancia o selecciona las más relevantes.</small></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="monto" /> <span>💵 Monto necesario y recaudado</span></label>
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="impacto" /> <span>🌱 Impacto esperado de la donación</span></label>
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="plazo" /> <span>📅 Plazo para alcanzar la meta</span></label>
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="fotos" /> <span>📸 Fotos/imágenes del proyecto</span></label>
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="responsable" /> <span>👤 Responsable o líder del proyecto</span></label>
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="donantes" /> <span>🙋 Lista de donantes</span></label>
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="actualizaciones" /> <span>🔔 Actualizaciones del proyecto</span></label>
+          <label class="opt-item"><input type="checkbox" name="detalle_proyecto[]" value="descripcion" /> <span>📝 Descripción detallada del proyecto</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P7 -->
+      <div class="question">
+        <label class="q-label">7. ¿Qué funcionalidades consideras imprescindibles en la plataforma? <span class="req">*</span> <br><small class="hint">Selecciona todas las que apliquen.</small></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="comentarios" /> <span>💬 Comentarios de usuarios</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="seguimiento" /> <span>📈 Seguimiento de donaciones</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="compartir_redes" /> <span>📲 Compartir en redes sociales</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="notificaciones" /> <span>🔔 Notificaciones de progreso</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="perfil_donante" /> <span>👤 Perfil de donante</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="historial" /> <span>📜 Historial de donaciones</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="buscador" /> <span>🔍 Buscador de proyectos</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="filtros" /> <span>🏷️ Filtros por categoría/estado</span></label>
+          <label class="opt-item"><input type="checkbox" name="funcionalidades[]" value="recibo" /> <span>🧾 Recibo/certificado de donación</span></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: REQUISITOS -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">⚙️</span>
+      <span class="section-title">Requisitos del Proyecto</span>
+    </div>
+    <div class="section-body">
+
+      <!-- P8 -->
+      <div class="question">
+        <label class="q-label">8. ¿El colegio tiene algún sistema de pago preferido? <span class="req">*</span> <br><small class="hint">Puedes seleccionar varios.</small></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="pse" /> <span>🏦 PSE (bancos colombianos)</span></label>
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="tarjeta" /> <span>💳 Tarjeta de crédito / débito</span></label>
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="nequi" /> <span>📱 Nequi</span></label>
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="daviplata" /> <span>📱 Daviplata</span></label>
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="paypal" /> <span>🌐 PayPal</span></label>
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="efecty" /> <span>💵 Efecty / Baloto</span></label>
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="transferencia" /> <span>🔄 Transferencia bancaria</span></label>
+          <label class="opt-item"><input type="checkbox" name="pago[]" value="sin_preferencia_pago" /> <span>🤷 Sin preferencia, se investiga</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P9 -->
+      <div class="question">
+        <label class="q-label">9. ¿Deseas que los usuarios reciban algún tipo de recibo o confirmación tras realizar una donación? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="recibo" value="email" /> <span>📧 Sí, por correo electrónico</span></label>
+          <label class="opt-item"><input type="radio" name="recibo" value="pantalla" /> <span>🖥️ Sí, mensaje de confirmación en pantalla</span></label>
+          <label class="opt-item"><input type="radio" name="recibo" value="ambos_recibo" /> <span>✅ Ambos (correo + pantalla)</span></label>
+          <label class="opt-item"><input type="radio" name="recibo" value="no_necesario" /> <span>❌ No es necesario</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P10 -->
+      <div class="question">
+        <label class="q-label">10. ¿Necesitamos una sección para mostrar a los donantes el progreso de los proyectos en tiempo real? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="progreso_tiempo_real" value="fundamental" /> <span>🚀 Sí, es fundamental</span></label>
+          <label class="opt-item"><input type="radio" name="progreso_tiempo_real" value="deseable" /> <span>👍 Sería bueno tenerlo</span></label>
+          <label class="opt-item"><input type="radio" name="progreso_tiempo_real" value="no_prioritario" /> <span>⏳ No es prioritario para esta etapa</span></label>
+          <label class="opt-item"><input type="radio" name="progreso_tiempo_real" value="no_necesario_prog" /> <span>❌ No es necesario</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P11 -->
+      <div class="question">
+        <label class="q-label">11. ¿La plataforma debería ofrecer la posibilidad de realizar donaciones recurrentes (mensuales, anuales)? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="donaciones_recurrentes" value="si_recurrente" /> <span>✅ Sí, es importante ofrecerlo</span></label>
+          <label class="opt-item"><input type="radio" name="donaciones_recurrentes" value="podria" /> <span>🤔 Podría considerarse a futuro</span></label>
+          <label class="opt-item"><input type="radio" name="donaciones_recurrentes" value="no_recurrente" /> <span>❌ No, solo donaciones únicas</span></label>
+          <label class="opt-item"><input type="radio" name="donaciones_recurrentes" value="sin_pref_rec" /> <span>🤷 Sin preferencia</span></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: ACCESIBILIDAD -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">♿</span>
+      <span class="section-title">Accesibilidad</span>
+    </div>
+    <div class="section-body">
+
+      <!-- P12 -->
+      <div class="question">
+        <label class="q-label">12. ¿Hay alguna preferencia por diseñar el sitio pensando en personas mayores o con menos experiencia tecnológica? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="acc_mayores" value="muy_importante" /> <span>🎯 Sí, es muy importante para nuestra comunidad</span></label>
+          <label class="opt-item"><input type="radio" name="acc_mayores" value="deseable_acc" /> <span>👍 Sería deseable considerarlo</span></label>
+          <label class="opt-item"><input type="radio" name="acc_mayores" value="no_prioritario_acc" /> <span>⏳ No es una prioridad por ahora</span></label>
+          <label class="opt-item"><input type="radio" name="acc_mayores" value="publico_joven" /> <span>👨‍💻 Nuestro público es principalmente joven/digital</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P13 -->
+      <div class="question">
+        <label class="q-label">13. ¿Debe considerarse alguna característica especial para personas con discapacidad? <span class="req">*</span> <br><small class="hint">Selecciona las que apliquen.</small></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="checkbox" name="discapacidad[]" value="lector_pantalla" /> <span>🔊 Compatibilidad con lectores de pantalla</span></label>
+          <label class="opt-item"><input type="checkbox" name="discapacidad[]" value="teclado" /> <span>⌨️ Navegación completa por teclado</span></label>
+          <label class="opt-item"><input type="checkbox" name="discapacidad[]" value="alto_contraste" /> <span>🌑 Modo de alto contraste</span></label>
+          <label class="opt-item"><input type="checkbox" name="discapacidad[]" value="texto_grande" /> <span>🔠 Opción de texto grande</span></label>
+          <label class="opt-item"><input type="checkbox" name="discapacidad[]" value="subtitulos" /> <span>📝 Subtítulos en videos</span></label>
+          <label class="opt-item"><input type="checkbox" name="discapacidad[]" value="no_necesario_disc" /> <span>❌ No es necesario considerarlo</span></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: INTERACCIÓN -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">🤝</span>
+      <span class="section-title">Interacción y Uso</span>
+    </div>
+    <div class="section-body">
+
+      <!-- P14 -->
+      <div class="question">
+        <label class="q-label">14. ¿Deberíamos permitir que los usuarios dejen comentarios o sugerencias sobre los proyectos? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="comentarios" value="si_todos" /> <span>💬 Sí, en todos los proyectos</span></label>
+          <label class="opt-item"><input type="radio" name="comentarios" value="si_algunos" /> <span>🔀 Solo en proyectos seleccionados</span></label>
+          <label class="opt-item"><input type="radio" name="comentarios" value="solo_sugerencias" /> <span>📩 Solo sugerencias privadas (no públicas)</span></label>
+          <label class="opt-item"><input type="radio" name="comentarios" value="no_comentarios" /> <span>❌ No por ahora</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P15 -->
+      <div class="question">
+        <label class="q-label">15. ¿Qué tan importante es que los proyectos puedan ser compartidos en redes sociales? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="redes_sociales" value="muy_importante_rs" /> <span>🚀 Muy importante, es clave para la difusión</span></label>
+          <label class="opt-item"><input type="radio" name="redes_sociales" value="importante_rs" /> <span>👍 Importante, pero no prioritario</span></label>
+          <label class="opt-item"><input type="radio" name="redes_sociales" value="poco_importante_rs" /> <span>😐 Poco importante</span></label>
+          <label class="opt-item"><input type="radio" name="redes_sociales" value="no_necesario_rs" /> <span>❌ No es necesario</span></label>
+        </div>
+        <p class="hint" style="margin-top:10px">¿Cuáles redes sociales considera más relevantes para compartir?</p>
+        <div class="options-grid" style="margin-top:8px">
+          <label class="opt-item"><input type="checkbox" name="redes[]" value="whatsapp" /> <span>📱 WhatsApp</span></label>
+          <label class="opt-item"><input type="checkbox" name="redes[]" value="facebook" /> <span>📘 Facebook</span></label>
+          <label class="opt-item"><input type="checkbox" name="redes[]" value="instagram" /> <span>📷 Instagram</span></label>
+          <label class="opt-item"><input type="checkbox" name="redes[]" value="twitter" /> <span>🐦 X (Twitter)</span></label>
+          <label class="opt-item"><input type="checkbox" name="redes[]" value="tiktok" /> <span>🎵 TikTok</span></label>
+          <label class="opt-item"><input type="checkbox" name="redes[]" value="linkedin" /> <span>💼 LinkedIn</span></label>
+        </div>
+      </div>
+
+      <hr class="q-divider"/>
+
+      <!-- P16 -->
+      <div class="question">
+        <label class="q-label">16. ¿Quieres que los usuarios reciban notificaciones sobre el avance de los proyectos en los que han donado? <span class="req">*</span></label>
+        <div class="options-grid">
+          <label class="opt-item"><input type="radio" name="notificaciones" value="email_notif" /> <span>📧 Sí, por correo electrónico</span></label>
+          <label class="opt-item"><input type="radio" name="notificaciones" value="plataforma_notif" /> <span>🔔 Sí, en la misma plataforma</span></label>
+          <label class="opt-item"><input type="radio" name="notificaciones" value="ambas_notif" /> <span>✅ Ambas opciones</span></label>
+          <label class="opt-item"><input type="radio" name="notificaciones" value="no_notif" /> <span>❌ No es necesario</span></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMENTARIOS FINALES -->
+  <div class="section-card">
+    <div class="section-header">
+      <span class="section-icon">📝</span>
+      <span class="section-title">Comentarios Adicionales</span>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label class="q-label">¿Hay alguna idea, expectativa o restricción adicional que quieras compartir con el equipo de desarrollo?</label>
+        <textarea class="textarea-input" name="comentarios_adicionales" rows="4" placeholder="Escribe aquí cualquier detalle extra que consideres importante..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-area">
+    <button type="submit" class="btn-submit">📨 Enviar respuestas</button>
+    <p class="submit-note">Tus respuestas serán recibidas directamente por el equipo de front-end. ¡Gracias por tu tiempo!</p>
+  </div>
+
+</form>
+</div>
+
+<footer>
+  Plataforma Crowdfunding Escolar &nbsp;·&nbsp; Kick-Off Front-End &nbsp;·&nbsp; 2026
+</footer>
+
+</body>
+</html>
